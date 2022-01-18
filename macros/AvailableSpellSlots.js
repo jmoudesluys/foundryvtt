@@ -3,20 +3,34 @@
 // Use token selected, or default character for the Actor if none is.
 let s_actor = canvas.tokens.controlled[0]?.actor || game.user.character;
 
-let messageContent = `Spell slots:<br>`;
+let messageContent = `<span style="font-size: 1.5em"><strong>Spell Slots</strong><br>`;
 let maxLevel = 9;
-let noSpellSlots = true;
 
 for (let level = 1; level <= maxLevel; level++) {
-    let availableSlots = s_actor.data.data.spells[`spell${level}`];
-    if (availableSlots.value > 0) {
-        messageContent += `lvl ${level}: ${availableSlots.value}/${availableSlots.max}<br>`;
-        noSpellSlots = false;
+    let spellSlots = s_actor.data.data.spells[`spell${level}`];
+
+    // only show spell levels the character actually has
+    if (spellSlots.max > 0) {
+        messageContent += `lvl ${level}:`;
+
+        // available slots
+        messageContent += `<span style="color:lime">`;
+        for (let i = 0; i < spellSlots.value; i++) {
+            messageContent += `&#x25cf;`;
+        }
+        messageContent += `</span>`;
+
+        // used slots
+        messageContent += `<span style="color:white">`;
+        let usedSlots = spellSlots.max - spellSlots.value;
+        for (let i = 0; i < usedSlots; i++) {
+            messageContent += `&#x25cf;`;
+        }
+        
+        messageContent += `</span><br/>`;
     }
 }
 
-if (noSpellSlots) {
-    messageContent = `No spell slots available.`
-}
+messageContent += "</span>";
 
 ui.notifications.info(messageContent);
