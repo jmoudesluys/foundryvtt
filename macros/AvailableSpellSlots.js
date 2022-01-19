@@ -1,4 +1,7 @@
-// VIEW AVAILABLE SPELL SLOTS
+//------------------------------------------------------------
+// SPELL SLOT TRACKER
+// Pops up a quick notification showing available spell slots.
+//------------------------------------------------------------
 
 // Use token selected, or default character for the Actor if none is.
 let s_actor = canvas.tokens.controlled[0]?.actor || game.user.character;
